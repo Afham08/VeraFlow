@@ -1,0 +1,8 @@
+{
+  "name": "Remix: VeraFlow",
+  "description": "AI-powered healthcare misinformation platform for verifying health claims.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}

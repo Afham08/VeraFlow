@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "expert", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Claim": {
+      "title": "Claim",
+      "description": "A health claim being verified",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "verdict": { "type": "string", "enum": ["True", "False", "Misleading", "Needs Context"] },
+        "trustScore": { "type": "number" },
+        "emotionalScore": { "type": "number" },
+        "sources": { "type": "array", "items": { "type": "string" } },
+        "region": { "type": "string" },
+        "severity": { "type": "string", "enum": ["Low", "Medium", "High"] },
+        "explanation": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "authorId": { "type": "string" }
+      },
+      "required": ["text", "verdict", "trustScore"]
+    },
+    "Consensus": {
+      "title": "Consensus",
+      "description": "Expert review of a claim",
+      "type": "object",
+      "properties": {
+        "expertId": { "type": "string" },
+        "expertName": { "type": "string" },
+        "expertRole": { "type": "string" },
+        "expertAvatar": { "type": "string" },
+        "expertInstitution": { "type": "string" },
+        "stance": { "type": "string", "enum": ["Agree", "Disagree", "Neutral"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["expertId", "stance"]
+    },
+    "VerificationRequest": {
+      "title": "VerificationRequest",
+      "description": "Request for specialized medical board status",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "licenseNo": { "type": "string" },
+        "institution": { "type": "string" },
+        "specialty": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "fullName", "licenseNo", "institution"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/verifications/{verificationId}": {
+      "schema": "VerificationRequest",
+      "description": "Expert verification applications"
+    },
+    "/claims/{claimId}": {
+      "schema": "Claim",
+      "description": "Verified health claims"
+    },
+    "/claims/{claimId}/consensus/{expertId}": {
+      "schema": "Consensus",
+      "description": "Expert reviews for a specific claim"
+    }
+  }
+}
